@@ -37,7 +37,7 @@
 
 ### Git
 - ✅ Repositorio inicializado y remoto configurado.
-- ⚠️ Commits descriptivos: solo existe el commit inicial; se recomienda continuar con convención consistente.
+- ✅ Commits descriptivos siguiendo convención (`Initial project setup`, `chore: document manual QA and export ABI`).
 - ✅ `.gitignore` correcto (`lib/`, `cache/`, `out/`): se ignoran `cache/`, `out/` y ahora también `lib/`.
 - ✅ El repositorio solo contiene código fuente relevante (sin `node_modules` ni dependencias vendorizadas).
 
@@ -45,8 +45,8 @@
 
 ### Resumen de cumplimiento
 - Total ítems revisados: 26  
-- Cumplidos (✅): 25  
-- Parciales/Pendientes (⚠️): 1  
+- Cumplidos (✅): 26  
+- Parciales/Pendientes (⚠️): 0  
 - No cumplidos (❌): 0  
 
-Acciones sugeridas: mantener una convención clara en commits futuros.
+Acciones sugeridas: n/a.
