@@ -10,3 +10,4 @@ broadcast/
 .DS_Store
 *.log
 tmp/
+lib/

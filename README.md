@@ -60,6 +60,18 @@ forge test
 forge coverage --profiles coverage
 ```
 
+## 🛠️ Actualizar ABI para el frontend
+
+Cuando cambies el contrato asegúrate de regenerar la ABI consumida por el hook `useContract`:
+
+```bash
+forge build
+mkdir -p dapp/abi
+cp out/DocumentRegistry.sol/DocumentRegistry.json dapp/abi/DocumentRegistry.json
+```
+
+El archivo se importa directamente en `dapp/hooks/useContract.ts`, por lo que el frontend siempre leerá la versión más reciente del contrato.
+
 ## 🏗️ Despliegue local rápido
 
 1. **Arrancar Anvil (opcional)**  
@@ -83,6 +95,21 @@ forge coverage --profiles coverage
 
 3. **Acceder a la dapp**  
    Abre `http://localhost:3001` y utiliza cualquiera de las wallets derivadas (combo en la cabecera) para firmar/verificar documentos.
+
+### Detener el entorno
+
+Cuando termines, puedes cerrar procesos y limpiar logs con:
+
+```bash
+# Detener la dapp (Next.js)
+pkill -f "next dev"
+
+# Detener Anvil
+pkill -f "anvil --chain-id 31337"
+
+# Opcional: limpiar logs temporales
+rm -rf tmp/
+```
 
 ## 📁 Estructura del proyecto
 

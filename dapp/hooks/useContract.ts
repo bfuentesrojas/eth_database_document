@@ -1,18 +1,10 @@
 import { useCallback, useMemo } from "react";
 import { ethers } from "ethers";
 import { useMetaMaskContext } from "../contexts/MetaMaskContext";
+import DocumentRegistryArtifact from "../abi/DocumentRegistry.json";
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS ?? "";
-
-const DOCUMENT_REGISTRY_ABI: ethers.InterfaceAbi = [
-    "event DocumentStored(bytes32 indexed hash, address indexed signer, uint256 timestamp)",
-    "function storeDocumentHash(bytes32 _hash, uint256 _timestamp, bytes _signature, address _signer) external",
-    "function verifyDocument(bytes32 _hash, address _signer, bytes _signature) external view returns (bool)",
-    "function getDocumentInfo(bytes32 _hash) external view returns (tuple(bytes32 hash, uint256 timestamp, address signer, bytes signature))",
-    "function isDocumentStored(bytes32 _hash) external view returns (bool)",
-    "function getDocumentCount() external view returns (uint256)",
-    "function getDocumentHashByIndex(uint256 _index) external view returns (bytes32)",
-];
+const DOCUMENT_REGISTRY_ABI = DocumentRegistryArtifact.abi as ethers.InterfaceAbi;
 
 type DocumentRegistryContract = ethers.Contract & {
     storeDocumentHash: (

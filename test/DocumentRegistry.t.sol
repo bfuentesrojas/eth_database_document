@@ -103,5 +103,16 @@ contract DocumentRegistryTest is Test {
         vm.expectRevert("Index out of bounds");
         registry.getDocumentHashByIndex(0);
     }
+
+    function testVerifyDocumentFailsForWrongSignature() public {
+        bytes32 hash = keccak256("doc-invalid-signature");
+        bytes memory signature = hex"12";
+        uint256 timestamp = block.timestamp;
+
+        registry.storeDocumentHash(hash, timestamp, signature, ALICE);
+
+        bool isValid = registry.verifyDocument(hash, ALICE, hex"34");
+        assertFalse(isValid, "Verification should fail if signature does not match");
+    }
 }
 
