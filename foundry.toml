@@ -1,0 +1,8 @@
+[profile.default]
+ffi = true
+
+[profile.coverage]
+match_path = "contracts/**/*.sol"
+
+[lint]
+exclude_lints = ["unsafe-cheatcode"]

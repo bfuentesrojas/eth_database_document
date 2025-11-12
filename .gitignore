@@ -1,0 +1,12 @@
+node_modules/
+dapp/.next/
+dapp/out/
+dapp/.vercel/
+.env
+.env.*
+cache/
+out/
+broadcast/
+.DS_Store
+*.log
+tmp/
