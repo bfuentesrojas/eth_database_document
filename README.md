@@ -36,7 +36,9 @@ npm install
 forge install
 ```
 
-> El proyecto incluye `lib/forge-std` como submódulo de Foundry. Si clonas con `--recurse-submodules` tendrás todo listo desde el inicio.
+> Nota: la carpeta `lib/` está excluida del repositorio. Ejecuta `forge install` tras clonar para recuperar `forge-std` y el resto de dependencias.
+
+> Todos los comandos de la dapp (`npm install`, `npm run dev`) se ejecutan desde la raíz del proyecto, ya que el script de despliegue asume ese layout.
 
 ## ⚙️ Variables de entorno
 
