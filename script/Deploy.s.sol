@@ -41,7 +41,7 @@ contract DeployDocumentRegistry is Script {
         console2.log("Ensuring Anvil on http://127.0.0.1:8545 ...");
         _runBash(
             string.concat(
-                "if ! pgrep -f \"anvil --chain-id 31337\" > /dev/null; then ",
+                "if ! pgrep -f \"[a]nvil --chain-id 31337\" > /dev/null; then ",
                 _ANVIL_CMD,
                 " sleep 1; fi"
             )
@@ -55,7 +55,7 @@ contract DeployDocumentRegistry is Script {
         _runBash("if [ ! -d node_modules ]; then npm install; fi");
         _runBash(
             string.concat(
-                "if ! pgrep -f \"next dev\" > /dev/null; then ",
+                "if ! pgrep -f \"[n]ext dev\" > /dev/null; then ",
                 _DAPP_CMD,
                 " sleep 2; fi"
             )
