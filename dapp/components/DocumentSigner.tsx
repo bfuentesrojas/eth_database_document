@@ -21,6 +21,49 @@ const DocumentSigner: React.FC<DocumentSignerProps> = ({ documentHash }) => {
     const [isSigning, setIsSigning] = useState<boolean>(false);
     const [isStoring, setIsStoring] = useState<boolean>(false);
 
+    const extractErrorMessage = useCallback((error: unknown): string => {
+        if (typeof error === "string") {
+            return error;
+        }
+        if (error && typeof error === "object") {
+            const errObject = error as {
+                shortMessage?: string;
+                message?: string;
+                reason?: string;
+                cause?: unknown;
+            };
+            if (typeof errObject.shortMessage === "string") {
+                return errObject.shortMessage;
+            }
+            if (typeof errObject.reason === "string") {
+                return errObject.reason;
+            }
+            if (typeof errObject.message === "string") {
+                return errObject.message;
+            }
+            if (errObject.cause) {
+                return extractErrorMessage(errObject.cause);
+            }
+        }
+        return "Se produjo un error inesperado.";
+    }, []);
+
+    const humanizeErrorMessage = useCallback(
+        (message: string): string => {
+            const normalized = message.toLowerCase();
+            if (normalized.includes("already stored")) {
+                return "El documento ya fue registrado previamente.";
+            }
+            if (normalized.includes("missing data") || normalized.includes("document not found")) {
+                return "No se encontró información para el hash proporcionado.";
+            }
+            if (normalized.includes("user rejected") || normalized.includes("user denied")) {
+                return "Acción cancelada por el usuario.";
+            }
+            return message;
+        },
+    );
+
     const handleSign = useCallback(async () => {
         if (!documentHash) {
             alert("Primero selecciona un archivo y genera su hash.");
@@ -53,12 +96,13 @@ const DocumentSigner: React.FC<DocumentSignerProps> = ({ documentHash }) => {
             setSignature(signedMessage);
             alert(`Documento firmado correctamente.\nFirma: ${signedMessage}`);
         } catch (error) {
+            const readable = humanizeErrorMessage(extractErrorMessage(error));
             console.error(error);
-            alert("No se pudo firmar el documento.");
+            alert(`No se pudo firmar el documento.\nDetalle: ${readable}`);
         } finally {
             setIsSigning(false);
         }
-    }, [connect, documentHash, isConnected, signMessage]);
+    }, [connect, documentHash, isConnected, signMessage, extractErrorMessage, humanizeErrorMessage]);
 
     const handleStoreOnChain = useCallback(async () => {
         if (!documentHash || !signature) {
@@ -93,12 +137,15 @@ const DocumentSigner: React.FC<DocumentSignerProps> = ({ documentHash }) => {
                 `Documento almacenado en la blockchain.\nTx Hash: ${txReceipt?.hash ?? "N/A"}`,
             );
         } catch (error) {
+            const readable = humanizeErrorMessage(extractErrorMessage(error));
             console.error(error);
-            alert("No se pudo almacenar el documento en la blockchain.");
+            alert(
+                `No se pudo almacenar el documento en la blockchain.\nDetalle: ${readable}`,
+            );
         } finally {
             setIsStoring(false);
         }
-    }, [documentHash, signature, storeDocumentHash, walletAddress]);
+    }, [documentHash, extractErrorMessage, humanizeErrorMessage, signature, storeDocumentHash, walletAddress]);
 
     return (
         <div className="card space-y-5">
